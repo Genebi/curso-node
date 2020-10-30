@@ -4,6 +4,8 @@ let listadoPorHacer = []
 
 const crear = (descripcion) => {
 
+    cargarDB();
+
     let porHacer = {
         descripcion,
         completado: false
@@ -16,6 +18,25 @@ const crear = (descripcion) => {
     return porHacer
 }
 
+const cargarDB = () => {
+
+    try {
+
+        listadoPorHacer = require('../db/data.json')
+
+    } catch (error) {
+
+        listadoPorHacer = []
+    }
+}
+
+const getListado = () => {
+
+    cargarDB()
+
+    return listadoPorHacer
+}
+
 const guardaDB = () => {
 
     let datos = JSON.stringify(listadoPorHacer)
@@ -26,6 +47,50 @@ const guardaDB = () => {
     })
 }
 
+const actualizar = (descripcion, completado = true) => {
+
+    cargarDB()
+
+    let index = listadoPorHacer.findIndex(tarea => tarea.descripcion === descripcion)
+
+    if (index >= 0) {
+
+        listadoPorHacer[index].completado = completado
+
+        guardaDB()
+
+        return true
+
+    } else {
+
+        return false
+    }
+}
+
+
+const eliminar = (descripcion) => {
+
+    cargarDB()
+
+    let index = listadoPorHacer.findIndex(tarea => tarea.descripcion === descripcion)
+
+    if (index >= 0) {
+
+        listadoPorHacer[index].pop()
+
+        guardaDB()
+
+        return true
+
+    } else {
+
+        return false
+    }
+}
+
 module.exports = {
-    crear
+    crear,
+    getListado,
+    actualizar,
+    eliminar
 }
