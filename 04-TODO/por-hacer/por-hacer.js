@@ -72,20 +72,20 @@ const eliminar = (descripcion) => {
 
     cargarDB()
 
-    let index = listadoPorHacer.findIndex(tarea => tarea.descripcion === descripcion)
+    let datos = listadoPorHacer.filter(tarea => tarea.descripcion != descripcion)
 
-    if (index >= 0) {
+    if (datos.length === listadoPorHacer.length) {
 
-        listadoPorHacer[index].pop()
+        return false
+        
+    } else {
+
+        listadoPorHacer = datos
 
         guardaDB()
 
         return true
-
-    } else {
-
-        return false
-    }
+    }  
 }
 
 module.exports = {
